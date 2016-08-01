@@ -11,12 +11,24 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var firstLabelForDate: UILabel!
     @IBOutlet weak var textFieldDate: UITextField!
+    @IBOutlet weak var datePickerDetails: UITextView!
     
     @IBAction func datePickerValueChanged(sender: AnyObject) {
         let dateFormatter = NSDateFormatter()
           dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-//        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+          dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle
         firstLabelForDate.text = dateFormatter.stringFromDate(sender.date)
+        //print(firstLabelForDate.text)
+        
+        let month = firstLabelForDate.text?.componentsSeparatedByString(" ")[0]
+        let date = firstLabelForDate.text?.componentsSeparatedByString(" ")[1].componentsSeparatedByString(",")[0]
+        let year = firstLabelForDate.text?.componentsSeparatedByString(", ")[1]
+        let timeHr = firstLabelForDate.text?.componentsSeparatedByString(" ")[3].componentsSeparatedByString(":")[0]
+        let timeMin = firstLabelForDate.text?.componentsSeparatedByString(" ")[3].componentsSeparatedByString(":")[1]
+        let timeSecond = firstLabelForDate.text?.componentsSeparatedByString(" ")[3].componentsSeparatedByString(":")[2]
+        
+        datePickerDetails.text = "Date: \(date) Month: \(month) Year: \(year) Hr: \(timeHr) Minutes: \(timeMin) Sec: \(timeSecond)"
+        datePickerDetails.userInteractionEnabled = false
     }
 
     @IBAction func textFieldDatePicker(sender: UITextField) {
@@ -34,18 +46,20 @@ class ViewController: UIViewController {
         datePickerView.addTarget(self, action: #selector(datePickerChanged), forControlEvents: .ValueChanged)
     }
     
-    func datePickerChanged(sender: UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        
-        textFieldDate.text = dateFormatter.stringFromDate(sender.date)
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        datePickerDetails.text = ""
 
+    }
+    
+    func datePickerChanged(sender: UIDatePicker) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle
+        
+        textFieldDate.text = dateFormatter.stringFromDate(sender.date)
+        
     }
 
     func doneButton() {
